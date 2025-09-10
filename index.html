@@ -1,111 +1,1009 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hans Reels - खोजें</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
-      color: #333;
-      text-align: center;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hans App - होमपेज</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ffde59;
+            --text: #333;
+            --text-light: #777;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --header-bg: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            --footer-bg: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
 
-    header {
-      background: #ff4b2b;
-      padding: 15px;
-      color: white;
-      font-size: 20px;
-    }
-
-    nav {
-      margin: 10px 0;
-    }
-
-    nav a {
-      margin: 0 15px;
-      text-decoration: none;
-      color: #ff4b2b;
-      font-weight: bold;
-    }
-
-    .search-container {
-      margin: 30px auto;
-      max-width: 500px;
-    }
-
-    input[type="text"] {
-      width: 70%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 25px;
-      outline: none;
-    }
-
-    button {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 25px;
-      background: #ff4b2b;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      margin-left: 10px;
-    }
-
-    button:hover {
-      background: #e63a1a;
-    }
-
-    .trending {
-      margin-top: 40px;
-    }
-
-    .tag {
-      display: inline-block;
-      background: #eee;
-      color: #444;
-      padding: 10px 15px;
-      border-radius: 20px;
-      margin: 5px;
-      cursor: pointer;
-    }
-
-    .tag:hover {
-      background: #ff4b2b;
-      color: white;
-    }
-  </style>
+        .dark-mode {
+            --primary: #8a3ffc;
+            --secondary: #4d8eff;
+            --accent: #ffed4e;
+            --text: #f0f0f0;
+            --text-light: #b0b0b0;
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --header-bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            --footer-bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: var(--transition);
+        }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* प्रीलोडर */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--header-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .preloader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            border-top: 5px solid var(--accent);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* नेविगेशन बार */
+        .navbar {
+            background: var(--header-bg);
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
+        }
+        
+        .login-btn, .signup-btn {
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .login-btn {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .login-btn:hover {
+            background: white;
+            color: var(--primary);
+        }
+        
+        .signup-btn {
+            background: var(--accent);
+            border: 2px solid var(--accent);
+            color: var(--text);
+        }
+        
+        .signup-btn:hover {
+            background: transparent;
+            color: white;
+        }
+        
+        /* हीरो सेक्शन */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 100px 0;
+            background: linear-gradient(135deg, rgba(106, 17, 203, 0.9) 0%, rgba(37, 117, 252, 0.9) 100%), url('https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3') no-repeat center center;
+            background-size: cover;
+            color: white;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+        }
+        
+        .hero-content {
+            max-width: 600px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            animation: fadeInUp 1s ease 0.2s;
+            animation-fill-mode: both;
+        }
+        
+        .hero-image {
+            max-width: 400px;
+            position: relative;
+            z-index: 2;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .hero-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform: perspective(1000px) rotateY(10deg);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            animation: fadeInUp 1s ease 0.4s;
+            animation-fill-mode: both;
+        }
+        
+        .cta-btn {
+            padding: 12px 30px;
+            background: var(--accent);
+            color: var(--text);
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .cta-btn i {
+            margin-left: 10px;
+        }
+        
+        .cta-btn:hover {
+            background: #ffcc00;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .cta-btn.secondary {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .cta-btn.secondary:hover {
+            background: white;
+            color: var(--primary);
+        }
+        
+        /* GitHub सेटअप सेक्शन */
+        .github-setup {
+            background: var(--header-bg);
+            color: white;
+            padding: 80px 0;
+            margin: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .github-setup::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') no-repeat center center;
+            background-size: cover;
+            opacity: 0.1;
+        }
+        
+        .setup-steps {
+            margin-top: 40px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .step.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .step:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            color: var(--text);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .step-content h3 {
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .step-content p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* फीचर्स सेक्शन */
+        .features {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 60px;
+            color: var(--text);
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 0;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            transition: var(--transition);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-card:hover::before {
+            height: 100%;
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 30px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .feature-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* फुटर */
+        .footer {
+            background: var(--footer-bg);
+            color: white;
+            padding: 80px 0 30px;
+            margin-top: 80px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--accent);
+        }
+        
+        .footer-column p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: var(--transition);
+        }
+        
+        .social-icons a:hover {
+            background: var(--accent);
+            color: var(--text);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* एनिमेशन */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        /* रेस्पॉन्सिव डिजाइन */
+        @media (max-width: 992px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 60px 0;
+            }
+            
+            .hero-content {
+                margin-bottom: 40px;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .cta-buttons {
+                justify-content: center;
+            }
+            
+            .hero-image {
+                max-width: 300px;
+            }
+            
+            .hero-image img {
+                transform: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .step-number {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .footer-column h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+        
+        /* स्क्रॉल टू टॉप बटन */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 99;
+        }
+        
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-to-top:hover {
+            background: var(--secondary);
+            transform: translateY(-5px);
+        }
+    </style>
 </head>
 <body>
+    <!-- प्रीलोडर -->
+    <div class="preloader">
+        <div class="preloader-spinner"></div>
+    </div>
 
-  <header>
-    🔍 Hans Reels - खोजें
-  </header>
+    <!-- नेविगेशन बार -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <i class="fas fa-feather-alt"></i>
+                <span>Hans App</span>
+            </div>
+            
+            <div class="nav-links">
+                <a href="#"><i class="fas fa-home"></i> होम</a>
+                <a href="#"><i class="fas fa-search"></i> खोज</a>
+                <a href="#"><i class="fas fa-upload"></i> अपलोड</a>
+                <a href="#"><i class="fas fa-bell"></i> सूचनाएं</a>
+                <a href="#"><i class="fas fa-cog"></i> व्यवस्थापक</a>
+            </div>
+            
+            <div class="nav-right">
+                <button class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="login-btn">लॉगिन</button>
+                <button class="signup-btn">साइनअप</button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- हीरो सेक्शन -->
+    <section class="hero">
+        <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
+            <div class="hero-content">
+                <h1>अपनी रचनात्मकता को Hans App के साथ उड़ान दें</h1>
+                                <p>Hans App एक शक्तिशाली प्लेटफॉर्म है जहाँ आप अपनी सामग्री बना सकते हैं, साझा कर सकते हैं और मुद्रीकृत कर सकते हैं। AI टूल्स और विश्लेषण के साथ अपनी क्षमता को अधिकतम करें।</p>
+                <div class="cta-buttons">
+                    <button class="cta-btn">अभी शुरू करें <i class="fas fa-arrow-right"></i></button>
+                    <button class="cta-btn secondary">और जानें</button>
+                </div>
+            </div>
+            
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Hans App Preview">
+            </div>
+        </div>
+    </section>
+    
+    <!-- GitHub सेटअप सेक्शन -->
+    <section class="github-setup">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">GitHub Pages सेटअप गाइड</h2>
+            <p style="text-align: center; font-size: 1.2rem; max-width: 800px; margin: 0 auto 40px; color: rgba(255, 255, 255, 0.9);">आपके GitHub Pages होमपेज को ठीक से सेटअप करने के लिए इन सरल चरणों का पालन करें:</p>
+            
+            <div class="setup-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>index.html फ़ाइल बनाएं</h3>
+                        <p>इस कोड को कॉपी करें और इसे अपने रिपोजिटरी में 'index.html' नाम की फ़ाइल के रूप में सहेजें।</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>रिपोजिटरी सेटिंग्स में जाएं</h3>
+                        <p>अपने GitHub रिपोजिटरी में, 'Settings' टैब पर क्लिक करें और फिर 'Pages' सेक्शन में जाएं।</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>ब्रांच सेलेक्ट करें</h3>
+                        <p>'Source' के अंतर्गत, ब्रांच को 'main' (या 'master') पर सेट करें और फ़ोल्डर को '/(root)' पर सेट करें।</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>सेव करें और प्रतीक्षा करें</h3>
+                        <p>परिवर्तनों को सहेजें। GitHub Pages को सेटअप होने में कुछ मिनट लग सकते हैं।</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>अपना पेज एक्सेस करें</h3>
+                        <p>एक बार सेटअप हो जाने के बाद, आप अपने पेज तक https://gopa1842.github.io/ पर पहुंच सकेंगे।</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- फीचर्स सेक्शन -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Hans App की विशेषताएं</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3>रील्स और स्टोरीज</h3>
+                    <p>आकर्षक रील्स और स्टोरीज बनाएं और अपने दर्शकों से जुड़ें। हमारे उन्नत संपादन उपकरणों के साथ अपनी सामग्री को बेहतर बनाएं।</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>राजस्व ट्रैकर</h3>
+                    <p>अपने राजस्व का विश्लेषण करें और अपने प्रदर्शन को बेहतर बनाने के लिए डेटा-संचालित निर्णय लें। वास्तविक समय में अपनी कमाई को ट्रैक करें।</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI टूल्स</h3>
+                    <p>हमारे AI-संचालित उपकरणों के साथ अपनी सामग्री का अनुकूलन करें। स्वचालित संपादन, सुझाव और अनुकूलन सुविधाओं का लाभ उठाएं।</p>
+                </div>
 
-  <nav>
-    <a href="index.html">होम</a>
-    <a href="search.html">खोजें</a>
-    <a href="upload.html">अपलोड</a>
-    <a href="notifications.html">सूचनाएं</a>
-    <a href="admin.html">एडमिन</a>
-  </nav>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <h3>विज्ञापन विश्लेषण</h3>
+                    <p>अपने विज्ञापनキャंपेन के प्रदर्शन को समझें और अपने ROI को अधिकतम करने के लिए रणनीतियों को अनुकूलित करें।</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3>बहुभाषा समर्थन</h3>
+                    <p>विभिन्न भाषाओं में अपनी सामग्री बनाएं और प्रकाशित करें। हमारा उन्नत अनुवाद सिस्टम आपकी पहुंच को वैश्विक बनाता है।</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>क्रिएटर समुदाय</h3>
+                    <p>समान विचारधारा वाले रचनाकारों से जुड़ें, सहयोग करें और एक-दूसरे से सीखें। हमारा समुदाय आपकी यात्रा में आपका समर्थन करेगा।</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- फुटर -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Hans App के बारे में</h3>
+                    <p>Hans App रचनाकारों के लिए एक comprehensive प्लेटफॉर्म है, जहाँ वे अपनी सामग्री बना सकते हैं, प्रबंधित कर सकते हैं और मुद्रीकृत कर सकते हैं।</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>लिंक्स</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">होम</a></li>
+                        <li><a href="#">खोज</a></li>
+                        <li><a href="#">अपलोड</a></li>
+                        <li><a href="#">सूचनाएं</a></li>
+                        <li><a href="#">व्यवस्थापक</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>समर्थन</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">सहायता केंद्र</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">संपर्क करें</a></li>
+                        <li><a href="#">प्राइवेसी पॉलिसी</a></li>
+                        <li><a href="#">शर्तें और नियम</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>न्यूज़लेटर</h3>
+                    <p>नवीनतम अपडेट और समाचार प्राप्त करने के लिए हमारे न्यूज़लेटर की सदस्यता लें।</p>
+                    <form>
+                        <input type="email" placeholder="आपका ईमेल पता" style="padding: 12px; width: 100%; border-radius: 50px; border: none; margin-bottom: 10px; background: rgba(255,255,255,0.1); color: white;">
+                        <button type="submit" style="padding: 12px; width: 100%; border-radius: 50px; border: none; background: var(--accent); color: var(--text); font-weight: bold; cursor: pointer;">सदस्यता लें</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2023 Hans App. सर्वाधिकार सुरक्षित। gopalyadavkanon@gmail.com</p>
+            </div>
+        </div>
+    </footer>
 
-  <div class="search-container">
-    <input type="text" placeholder="वीडियो, गाने या क्रिएटर खोजें...">
-    <button>खोजें</button>
-  </div>
+    <!-- स्क्रॉल टू टॉप बटन -->
+    <div class="scroll-to-top" id="scroll-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
 
-  <div class="trending">
-    <h3>🔥 ट्रेंडिंग टैग्स</h3>
-    <div class="tag">#मोटिवेशन</div>
-    <div class="tag">#लव</div>
-    <div class="tag">#कॉमेडी</div>
-    <div class="tag">#डांस</div>
-    <div class="tag">#सॉन्ग्स</div>
-  </div>
-
+    <script>
+        // DOM लोड होने के बाद
+        document.addEventListener('DOMContentLoaded', function() {
+            // प्रीलोडर हटाएं
+            setTimeout(() => {
+                document.querySelector('.preloader').style.opacity = '0';
+                setTimeout(() => {
+                    document.querySelector('.preloader').style.display = 'none';
+                }, 500);
+            }, 1500);
+            
+            // थीम टॉगल
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                
+                if (document.body.classList.contains('dark-mode')) {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
+                
+                // localStorage में थीम सेव करें
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDarkMode);
+            });
+            
+            // localStorage से थीम लोड करें
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+            
+            // स्क्रॉल एनिमेशन
+            function checkScroll() {
+                const steps = document.querySelectorAll('.step');
+                const features = document.querySelectorAll('.feature-card');
+                const scrollToTop = document.getElementById('scroll-to-top');
+                
+                steps.forEach(step => {
+                    const stepPosition = step.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if (stepPosition < screenPosition) {
+                        step.classList.add('visible');
+                    }
+                });
+                
+                features.forEach(feature => {
+                    const featurePosition = feature.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if (featurePosition < screenPosition) {
+                        feature.classList.add('visible');
+                    }
+                });
+                
+                // स्क्रॉल टू टॉप बटन दिखाएं/छुपाएं
+                if (window.pageYOffset > 300) {
+                    scrollToTop.classList.add('visible');
+                } else {
+                    scrollToTop.classList.remove('visible');
+                }
+            }
+            
+            // स्क्रॉल टू टॉप फंक्शन
+            document.getElementById('scroll-to-top').addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // स्क्रॉल इवेंट लिस्नेर
+            window.addEventListener('scroll', checkScroll);
+            
+            // पहली बार चेक करें
+            checkScroll();
+            
+            // बटन क्लिक इवेंट्स
+            const loginBtn = document.querySelector('.login-btn');
+            const signupBtn = document.querySelector('.signup-btn');
+            const ctaBtn = document.querySelector('.cta-btn');
+            
+            loginBtn.addEventListener('click', function() {
+                alert('लॉगिन पेज जल्द ही उपलब्ध होगा!');
+            });
+            
+            signupBtn.addEventListener('click', function() {
+                alert('साइनअप पेज जल्द ही उपलब्ध होगा!');
+            });
+            
+            ctaBtn.addEventListener('click', function() {
+                alert('Hans App के साथ अपनी यात्रा शुरू करें!');
+            });
+        });
+    </script>
 </body>
 </html>
